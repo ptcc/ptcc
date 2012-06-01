@@ -1,37 +1,178 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<style>
+*{
+  box-sizing:border-box;
+}
 
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+#StartMonthYearSelector 
+{
+    position:absolute;
+    height:140px;
+    width:170px;
+    background:#fefefe;
+    border:solid 1px #555;
+    /*margin-top:20px;*/
 
-    <title>Ptcc by ptcc</title>
-  </head>
+}
+#StartMonthYearSelector > div
+{
+    height:30px;
+    width:30px;
+    margin:5px;
+    float:left;
+    border:solid 1px #888;
+    text-align:center;
+    vertical-align:middle;
+    line-height:28px;
+    background-color: #fff;
+    cursor: pointer;
+}
 
-  <body>
+#StartMonthYearSelector > div:hover
+{
+	background-color: yellow;
+}
 
-    <header>
-      <div class="container">
-        <h1>Ptcc</h1>
-        <h2></h2>
+#StartMonthYearSelector > div.disabled,
+#StartMonthYearSelector > div.disabled:hover
+{
+	color: #ccc;
+	border-color:#ccc;
+	cursor: default;
+	background-color: #eee;
+}
 
-        <section id="downloads">
-          <a href="https://github.com/ptcc/ptcc/zipball/master" class="btn">Download as .zip</a>
-          <a href="https://github.com/ptcc/ptcc/tarball/master" class="btn">Download as .tar.gz</a>
-          <a href="https://github.com/ptcc/ptcc" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-        </section>
-      </div>
-    </header>
+#StartMonthYearSelector > header
+{
+	height:20px;
+	text-align:center;
+}
 
-    <div class="container">
-      <section id="main_content">
-        <p>Month/year picker - <a href="http://tiagocoelhoblog.wordpress.com/2012/05/31/simple-monthyear-picker-with-jquery/">http://tiagocoelhoblog.wordpress.com/2012/05/31/simple-monthyear-picker-with-jquery/</a></p>
-      </section>
-    </div>
+#prevYear,#nextYear
+{
+	width:10px;
+	height:20px;	
+	cursor: pointer;
+}
+#prevYear
+{
+	float: left;
+	border-top:solid 10px transparent;
+	border-bottom:solid 10px transparent;
+	border-right:solid 10px #DDD;
+	padding-right:10px;
+}
+#nextYear
+{
+	float: right;
+	border-top:solid 10px transparent;
+	border-bottom:solid 10px transparent;
+	border-left:solid 10px #DDD;
+	padding-left:10px;
+}
 
-    
-  </body>
+#nextYear:hover
+{
+	border-left:solid 10px #999;
+}
+
+#prevYear:hover
+{
+	border-right:solid 10px #999;
+}
+
+#selectedYear
+{
+	width:130px;
+}
+</style>
+</head>
+<body>
+	<div id='container'>
+		<input type="text" id="calInput"></input>		
+		<div id="StartMonthYearSelector" style="display:none">
+			<header>
+				<div id="prevYear"></div>
+				<div id="nextYear" style="display:none"></div>
+				<div id="selectedYear"></div>
+			</header>
+			<div>1</div>
+			<div>2</div>
+			<div>3</div>
+			<div>4</div>
+			<div>5</div>
+			<div>6</div>
+			<div>7</div>
+			<div>8</div>
+			<div>9</div>
+			<div>10</div>
+			<div>11</div>
+			<div>12</div>
+		</div>
+	</div>
+	<script>
+		$(function(){			
+			var curYear=null;
+			var today=new Date();
+			var nowYear=today.getFullYear();
+			var nowMonth=today.getMonth();
+			$('#container *').focus(function(){
+				//convert string to number -> 0 if null or empty string
+				curYear = +($('#selectedYear').html());
+				if(curYear===0){
+					curYear=nowYear;
+					$('#selectedYear').html(curYear);
+					disableFutureMonths();
+				}
+				$('#StartMonthYearSelector').show();					
+				}
+			);
+			
+			$('#StartMonthYearSelector>div:nth-child(n+2)').click(function(){
+				if($(this).hasClass('disabled')){
+					return;
+				}
+				var date=new Date(curYear,this.innerHTML-1,1);
+				$('#calInput').val(date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear());
+				$('#StartMonthYearSelector').hide();
+			});
+
+			$('#prevYear').click(function(){ 
+				if(curYear===nowYear){
+					$('#nextYear').show();
+					enableAllMonths();
+				}
+				curYear = curYear-1;
+				$('#selectedYear').html(curYear);
+				
+			});
+
+			$('#nextYear').click(function(){ 				
+				curYear = curYear+1;
+				$('#selectedYear').html(curYear);
+				if(curYear===nowYear){
+					$(this).hide();
+					disableFutureMonths();
+				}
+			});
+
+			$('html').mousedown(function(ev){
+				if(!($(ev.target).is('#container *'))){
+					$('#StartMonthYearSelector').hide();
+				}
+			});
+
+			function disableFutureMonths(){
+				$('#StartMonthYearSelector>div:nth-child(n+'+(2+nowMonth)+')').addClass('disabled');
+			}
+
+			function enableAllMonths(){
+				$('#StartMonthYearSelector>div.disabled').removeClass('disabled');
+			}
+		});
+	</script>
+</body>
 </html>
