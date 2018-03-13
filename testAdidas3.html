@@ -1,25 +1,26 @@
 <html>
- <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <style>
-      body.openModal > .modalThing{
-        display:block !important;
-      }
-     /* body.openModal > :not(.modalThing){
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <style>
+    body.openModal>.modalThing {
+      display: block !important;
+    }
+
+     body.openModal > :not(.modalThing){
         display:none !important;
-      } */
-    </style>
- </head>
- <body style="width: 100%; height: 100%;">
-  <a href="javascript:void();" onclick="body.className='openModal'">GET NEWS!!</a> 
+      } 
+  </style>
+</head>
+
+<body style="width: 100%; height: 100%;margin:0;">
+  <a href="javascript:void();" onclick="body.className='openModal'">GET NEWS HERE!!</a>
   <div style="background:blue;height:1000px">
 
-   </div>
-   <div class="modalThing"
-   style="display:none;position: absolute;top: 0;bottom: 0;left: 0;right: 0;width: 100%;height: 100%;overflow: scroll">
-     <div style="width:100%;height: 100%;-webkit-overflow-scrolling: touch;overflow: auto;">
-       <iframe src="https://signup.adidas.com/2a9bcc1e-3aa7-44af-b3b8-bcd891178d1b" style="width: 100%; height:100%;border:none"></iframe>
-     </div>
-   </div>
- </body>
+  </div>
+  <div class="modalThing" style="display:none;">
+    <iframe src="https://signup.adidas.com/2a9bcc1e-3aa7-44af-b3b8-bcd891178d1b" style="width: 100%; height:100%;border:none"></iframe>
+  </div>
+</body>
+
 </html>
